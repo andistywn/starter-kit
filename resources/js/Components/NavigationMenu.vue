@@ -50,6 +50,9 @@ const logout = () => {
             <NavLink :href="route('theme.behavior')" :active="route().current('theme.behavior')">
               Theme Behavior
             </NavLink>
+            <NavLink :href="route('theme.builder')" :active="route().current('theme.builder')">
+              Theme Builder
+            </NavLink>
           </div>
         </div>
 
@@ -220,6 +223,9 @@ const logout = () => {
         </ResponsiveNavLink>
         <ResponsiveNavLink :href="route('theme.behavior')" :active="route().current('theme.behavior')">
           Theme Behavior
+        </ResponsiveNavLink>
+        <ResponsiveNavLink :href="route('theme.builder')" :active="route().current('theme.builder')">
+          Theme Builder
         </ResponsiveNavLink>
       </div>
 

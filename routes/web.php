@@ -25,4 +25,8 @@ Route::middleware([
     Route::get('/theme-behavior', function () {
         return Inertia::render('ThemeBehavior');
     })->name('theme.behavior');
+
+    Route::get('/theme-builder', function () {
+        return Inertia::render('ThemeBuilder');
+    })->name('theme.builder');
 });
