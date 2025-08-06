@@ -5,6 +5,8 @@ declare global {
     interface Window {
         // Add any global window properties here
     }
+
+    function route(name?: string, params?: any, absolute?: boolean): any;
 }
 
 declare module '@inertiajs/core' {
@@ -14,6 +16,12 @@ declare module '@inertiajs/core' {
 }
 
 declare module '*.vue' {
+    import type { DefineComponent } from 'vue';
+    const component: DefineComponent<{}, {}, any>;
+    export default component;
+}
+
+declare module '@/Components/*.vue' {
     import type { DefineComponent } from 'vue';
     const component: DefineComponent<{}, {}, any>;
     export default component;
