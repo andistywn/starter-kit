@@ -1,0 +1,1550 @@
+Directory structure:
+└── catppuccin-daisyui/
+    ├── README.md
+    ├── build.config.ts
+    ├── CHANGELOG.md
+    ├── eslint.config.js
+    ├── LICENSE
+    ├── package.json
+    ├── pnpm-workspace.yaml
+    ├── renovate.json
+    ├── tsconfig.json
+    ├── types.d.ts
+    ├── .editorconfig
+    ├── .npmignore
+    ├── assets/
+    │   └── .gitkeep
+    ├── example/
+    │   ├── index.html
+    │   ├── package.json
+    │   ├── tsconfig.json
+    │   ├── vite.config.ts
+    │   └── src/
+    │       ├── catppuccinTheme.frappe.ts
+    │       ├── catppuccinTheme.latte.ts
+    │       ├── catppuccinTheme.macchiato.ts
+    │       ├── catppuccinTheme.mocha.ts
+    │       ├── main.ts
+    │       ├── style.css
+    │       └── vite-env.d.ts
+    ├── src/
+    │   ├── generate.ts
+    │   ├── generateTheme.ts
+    │   ├── index.ts
+    │   └── legacy/
+    │       └── index.ts
+    └── .github/
+        └── workflows/
+            ├── build.yml
+            └── release-please.yml
+
+================================================
+FILE: README.md
+================================================
+<h3 align="center">
+  <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/logos/exports/1544x1544_circle.png" width="100" alt="Logo"/><br/>
+  <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/misc/transparent.png" height="30" width="0px"/>
+  Catppuccin for <a href="https://github.com/saadeghi/daisyui">daisyUI</a>
+  <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/misc/transparent.png" height="30" width="0px"/>
+</h3>
+
+<p align="center">
+  <a href="https://github.com/catppuccin/daisyui/stargazers"><img src="https://img.shields.io/github/stars/catppuccin/daisyui?colorA=363a4f&colorB=b7bdf8&style=for-the-badge"></a>
+  <a href="https://github.com/catppuccin/daisyui/issues"><img src="https://img.shields.io/github/issues/catppuccin/daisyui?colorA=363a4f&colorB=f5a97f&style=for-the-badge"></a>
+  <a href="https://github.com/catppuccin/daisyui/contributors"><img src="https://img.shields.io/github/contributors/catppuccin/daisyui?colorA=363a4f&colorB=a6da95&style=for-the-badge"></a>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/catppuccin/daisyui/main/assets/previews/preview.webp"/>
+</p>
+
+## Previews
+
+<details>
+<summary>🌻 Latte</summary>
+<img src="https://raw.githubusercontent.com/catppuccin/daisyui/main/assets/previews/latte.webp"/>
+</details>
+<details>
+<summary>🪴 Frappé</summary>
+<img src="https://raw.githubusercontent.com/catppuccin/daisyui/main/assets/previews/frappe.webp"/>
+</details>
+<details>
+<summary>🌺 Macchiato</summary>
+<img src="https://raw.githubusercontent.com/catppuccin/daisyui/main/assets/previews/macchiato.webp"/>
+</details>
+<details>
+<summary>🌿 Mocha</summary>
+<img src="https://raw.githubusercontent.com/catppuccin/daisyui/main/assets/previews/mocha.webp"/>
+</details>
+
+## Usage
+
+### Installation
+
+| **npm**                            | **pnpm**                        | **yarn**                        |
+| ---------------------------------- | ------------------------------- | ------------------------------- |
+| npm install -D @catppuccin/daisyui | pnpm add -D @catppuccin/daisyui | yarn add -D @catppuccin/daisyui |
+
+### Configuration
+
+0. Follow the installation instructions for [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite) and [daisyUI](https://daisyui.com/docs/install/)
+
+1. Create a separate file like `catppuccinTheme.latte.ts` and import `@catppuccin/daisyui`
+
+   ```javascript
+   import { createCatppuccinPlugin } from '@catppuccin/daisyui'
+
+   export default createCatppuccinPlugin('latte')
+   ```
+
+   You can view available values through your editor's type hints. Check [example](https://github.com/catppuccin/daisyui/tree/main/example/src) for additional details.
+
+2. Import the created file in your CSS configuration file
+
+   ```css
+   @import 'tailwindcss';
+   @plugin "daisyui" {
+     themes: false;
+   }
+
+   @plugin "./catppuccinTheme.latte.ts";
+   @plugin "./catppuccinTheme.frappe.ts";
+   @plugin "./catppuccinTheme.macchiato.ts";
+   @plugin "./catppuccinTheme.mocha.ts";
+   ```
+
+> [!TIP]
+> For daisyUI v4, you can import required functions from `@catppuccin/daisyui/legacy`. For specific usage, refer to the [previous guide](https://github.com/catppuccin/daisyui/blob/c03cb0e6eafc3d20c9d85c38a671a937d93a64c8/README.md).
+
+#### For CDN
+
+Inspired by the CDN usage of daisyUI, I have separated each theme, allowing you to independently import a single theme or combine the themes you need. See:
+
+```html
+<!-- some? -->
+<link
+  href="https://cdn.jsdelivr.net/npm/@catppuccin/daisyui@2/latte.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="https://cdn.jsdelivr.net/combine/npm/@catppuccin/daisyui@2/latte.css,npm/@catppuccin/daisyui@2/frappe.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="https://cdn.jsdelivr.net/combine/npm/@catppuccin/daisyui@2/latte.css,npm/@catppuccin/daisyui@2/macchiato.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="https://cdn.jsdelivr.net/combine/npm/@catppuccin/daisyui@2/latte.css,npm/@catppuccin/daisyui@2/mocha.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+<!-- every! -->
+<link href="https://cdn.jsdelivr.net/npm/@catppuccin/daisyui@2/themes.css" rel="stylesheet" type="text/css" />
+```
+
+### Example
+
+You can use the following HTML to test the theme:
+
+```html
+<div class="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-9">
+  <button class="btn">Default</button>
+  <button class="btn btn-neutral">Neutral</button>
+  <button class="btn btn-primary">Primary</button>
+  <button class="btn btn-secondary">Secondary</button>
+  <button class="btn btn-accent">Accent</button>
+  <button class="btn btn-info">Info</button>
+  <button class="btn btn-success">Success</button>
+  <button class="btn btn-warning">Warning</button>
+  <button class="btn btn-error">Error</button>
+</div>
+```
+
+You can find the example in the `example` folder.
+
+## 💝 Thanks to
+
+- [Liumingxun](https://github.com/Liumingxun)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" />
+</p>
+
+<p align="center">
+  Copyright &copy; 2021-present <a href="https://github.com/catppuccin" target="_blank">Catppuccin Org</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/catppuccin/catppuccin/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=d9e0ee&colorA=363a4f&colorB=b7bdf8"/></a>
+</p>
+
+
+
+================================================
+FILE: build.config.ts
+================================================
+import { defineBuildConfig } from 'unbuild'
+
+export default defineBuildConfig({
+  externals: [
+    'daisyui/theme',
+  ],
+  entries: [
+    'src/legacy/index',
+    'src/index',
+  ],
+  rollup: {
+    emitCJS: true,
+  },
+  declaration: true,
+})
+
+
+
+================================================
+FILE: CHANGELOG.md
+================================================
+# Changelog
+
+## [2.1.1](https://github.com/catppuccin/daisyui/compare/v2.1.0...v2.1.1) (2025-04-21)
+
+
+### Bug Fixes
+
+* add `themes.css` to files ([#73](https://github.com/catppuccin/daisyui/issues/73)) ([10d3cc0](https://github.com/catppuccin/daisyui/commit/10d3cc0a012806c0656759b6422d8b0bab4ed2a7))
+
+## [2.1.0](https://github.com/catppuccin/daisyui/compare/v2.0.0...v2.1.0) (2025-04-21)
+
+
+### Features
+
+* support CDN usage ([#71](https://github.com/catppuccin/daisyui/issues/71)) ([927b795](https://github.com/catppuccin/daisyui/commit/927b795c9656928fe34d9b0d0ce4d55fa06d791f))
+
+## [2.0.0](https://github.com/catppuccin/daisyui/compare/v1.2.1...v2.0.0) (2025-04-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to v5 ([#60](https://github.com/catppuccin/daisyui/issues/60))
+
+### Features
+
+* upgrade to v5 ([#60](https://github.com/catppuccin/daisyui/issues/60)) ([76ba362](https://github.com/catppuccin/daisyui/commit/76ba3624a453f74edca6dde16709d884a02e49a2))
+
+## [1.2.1](https://github.com/catppuccin/daisyui/compare/v1.2.0...v1.2.1) (2024-11-15)
+
+
+### Bug Fixes
+
+* regenerate `pnpm-lock.yaml` ([#44](https://github.com/catppuccin/daisyui/issues/44)) ([446831c](https://github.com/catppuccin/daisyui/commit/446831c7f3d17334b2e3a0f8d7ffb0d3c9706306))
+
+## [1.2.0](https://github.com/catppuccin/daisyui/compare/v1.1.2...v1.2.0) (2024-11-15)
+
+
+### Features
+
+* generate css for CDN usage ([#42](https://github.com/catppuccin/daisyui/issues/42)) ([c03cb0e](https://github.com/catppuccin/daisyui/commit/c03cb0e6eafc3d20c9d85c38a671a937d93a64c8))
+
+## [1.1.2](https://github.com/catppuccin/daisyui/compare/v1.1.1...v1.1.2) (2024-09-13)
+
+
+### Bug Fixes
+
+* **deps:** update export type's deps ([#31](https://github.com/catppuccin/daisyui/issues/31)) ([8cb3a67](https://github.com/catppuccin/daisyui/commit/8cb3a672173460e0fa3e4001cbcccb266f88d036))
+* **typo:** correct "floder" ([#10](https://github.com/catppuccin/daisyui/issues/10)) ([8161ede](https://github.com/catppuccin/daisyui/commit/8161edea01be235237db551459008164ff091247))
+
+## [1.1.1](https://github.com/catppuccin/daisyui/compare/v1.1.0...v1.1.1) (2024-06-24)
+
+
+### Miscellaneous Chores
+
+* release 1.1.1 ([#8](https://github.com/catppuccin/daisyui/issues/8)) ([03c0a56](https://github.com/catppuccin/daisyui/commit/03c0a561dc9ff87491c053bda9f3985bff764d15))
+
+## [1.1.0](https://github.com/catppuccin/daisyui/compare/v1.0.0...v1.1.0) (2024-06-24)
+
+### Continuous Integration
+
+* fix build step ([#5](https://github.com/catppuccin/daisyui/issues/5)) ([0ebbd3e](https://github.com/catppuccin/daisyui/commit/0ebbd3eca7605e14f60205a8f8987dc4c623c72e))
+
+### Features
+
+* customizable semantic colors ([#3](https://github.com/catppuccin/daisyui/issues/3)) ([c796819](https://github.com/catppuccin/daisyui/commit/c7968197356714931fab27b970d90783c6719a7a))
+
+## 1.0.0 (2024-06-12)
+
+
+### Features
+
+* pick accent color ([9826912](https://github.com/catppuccin/daisyui/commit/982691251f7fe2e19a669d00c3a00a14e36ff040))
+
+
+
+================================================
+FILE: eslint.config.js
+================================================
+import antfu from '@antfu/eslint-config'
+
+export default antfu({
+  formatters: true,
+  markdown: true,
+})
+
+
+
+================================================
+FILE: LICENSE
+================================================
+MIT License
+
+Copyright (c) 2021 Catppuccin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+================================================
+FILE: package.json
+================================================
+{
+  "name": "@catppuccin/daisyui",
+  "type": "module",
+  "version": "2.1.1",
+  "packageManager": "pnpm@10.10.0",
+  "description": "🌼 Soothing pastel theme for daisyui",
+  "author": "lime <liumingxun@yeah.net>",
+  "license": "MIT",
+  "keywords": [
+    "catppuccin",
+    "theme",
+    "daisyui"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./legacy": {
+      "types": "./dist/legacy/index.d.ts",
+      "import": "./dist/legacy/index.mjs",
+      "require": "./dist/legacy/index.cjs"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "browser": "./themes.css",
+  "files": [
+    "./frappe.css",
+    "./latte.css",
+    "./macchiato.css",
+    "./mocha.css",
+    "./themes.css",
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild && pnpx jiti ./src/generate.ts",
+    "dev": "unbuild --stub",
+    "dev:example": "pnpm -F example dev",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest --typecheck",
+    "prepublishOnly": "pnpm run build",
+    "publish": "npm publish"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^4.0.17"
+  },
+  "dependencies": {
+    "@catppuccin/palette": "^1.7.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.11.0",
+    "@types/node": "^20",
+    "daisyui": "^5.0.9",
+    "eslint": "^9.23.0",
+    "eslint-plugin-format": "^1.0.1",
+    "typescript": "^5.8.2",
+    "unbuild": "^3.5.0"
+  }
+}
+
+
+
+================================================
+FILE: pnpm-workspace.yaml
+================================================
+packages:
+  - example
+onlyBuiltDependencies:
+  - esbuild
+
+
+
+================================================
+FILE: renovate.json
+================================================
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>catppuccin/renovate-config"
+  ]
+}
+
+
+
+================================================
+FILE: tsconfig.json
+================================================
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
+  }
+}
+
+
+
+================================================
+FILE: types.d.ts
+================================================
+declare module 'daisyui/theme' {
+  import type Plugin from 'tailwindcss/plugin'
+
+  type WithOptionsType = ReturnType<typeof Plugin.withOptions>
+  declare const themePlugin: WithOptionsType
+  export default themePlugin
+}
+
+
+
+================================================
+FILE: .editorconfig
+================================================
+# EditorConfig helps developers define and maintain consistent
+# coding styles between different editors and IDEs
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true
+
+[*]
+charset = utf-8
+indent_size = 2
+indent_style = space
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# go
+[*.go]
+indent_style = tab
+indent_size = 4
+
+# python
+[*.{ini,py,py.tpl,rst}]
+indent_size = 4
+
+# rust
+[*.rs]
+indent_size = 4
+
+# documentation, utils
+[*.{md,mdx,diff}]
+trim_trailing_whitespace = false
+
+# windows shell scripts
+[*.{cmd,bat,ps1}]
+end_of_line = crlf
+
+
+
+================================================
+FILE: .npmignore
+================================================
+example
+
+
+================================================
+FILE: assets/.gitkeep
+================================================
+[Empty file]
+
+
+================================================
+FILE: example/index.html
+================================================
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+
+  <body>
+    <div class="rounded-box px-6 py-2 w-full max-h-screen overflow-hidden">
+      <div id="app" class="pb-3"></div>
+      <div class="flex flex-col gap-3">
+        <div class="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-9">
+          <button class="btn">Default</button>
+          <button class="btn btn-neutral">Neutral</button>
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-accent">Accent</button>
+          <button class="btn btn-info">Info</button>
+          <button class="btn btn-success">Success</button>
+          <button class="btn btn-warning">Warning</button>
+          <button class="btn btn-error">Error</button>
+        </div>
+        <div class="grid grid-cols-2 place-items-center gap-2 md:grid-cols-4 lg:grid-cols-9">
+          <input type="text" placeholder="Default" class="input input-bordered w-full" />
+          <input type="text" placeholder="Neutral" class="input input-neutral input-bordered w-full" />
+          <input type="text" placeholder="Primary" class="input input-primary input-bordered w-full" />
+          <input type="text" placeholder="Secondary" class="input input-secondary input-bordered w-full" />
+          <input type="text" placeholder="Accent" class="input input-accent input-bordered w-full" />
+          <input type="text" placeholder="Info" class="input input-info input-bordered w-full" />
+          <input type="text" placeholder="Success" class="input input-success input-bordered w-full" />
+          <input type="text" placeholder="Warning" class="input input-warning input-bordered w-full" />
+          <input type="text" placeholder="Error" class="input input-error input-bordered w-full" />
+        </div>
+        <div
+          class="grid grid-cols-2 place-items-center gap-2 md:grid-cols-4 lg:grid-cols-9 *:flex-col *:lg:flex *:lg:gap-2 *:lg:items-center"
+        >
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle" />
+              <input type="checkbox" checked="checked" class="checkbox" />
+              <input type="radio" name="radio" class="radio" checked="" />
+            </div>
+            <span class="badge badge-soft">Default</span>
+          </div>
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle toggle-neutral" />
+              <input type="checkbox" checked="checked" class="checkbox checkbox-neutral" />
+              <input type="radio" name="radio" class="radio radio-neutral" />
+            </div>
+            <span class="badge badge-soft badge-neutral">Neutral</span>
+          </div>
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle toggle-primary" />
+              <input type="checkbox" checked="checked" class="checkbox checkbox-primary" />
+              <input type="radio" name="radio" class="radio radio-primary" />
+            </div>
+            <span class="badge badge-soft badge-primary">Primary</span>
+          </div>
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle toggle-secondary" />
+              <input type="checkbox" checked="checked" class="checkbox checkbox-secondary" />
+              <input type="radio" name="radio" class="radio radio-secondary" />
+            </div>
+            <span class="badge badge-soft badge-secondary">Secondary</span>
+          </div>
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle toggle-accent" />
+              <input type="checkbox" checked="checked" class="checkbox checkbox-accent" />
+              <input type="radio" name="radio" class="radio radio-accent" />
+            </div>
+            <span class="badge badge-soft badge-accent">Accent</span>
+          </div>
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle toggle-info" />
+              <input type="checkbox" checked="checked" class="checkbox checkbox-info" />
+              <input type="radio" name="radio" class="radio radio-info" />
+            </div>
+            <span class="badge badge-soft badge-info">Info</span>
+          </div>
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle toggle-success" />
+              <input type="checkbox" checked="checked" class="checkbox checkbox-success" />
+              <input type="radio" name="radio" class="radio radio-success" />
+            </div>
+            <span class="badge badge-soft badge-success">Success</span>
+          </div>
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle toggle-warning" />
+              <input type="checkbox" checked="checked" class="checkbox checkbox-warning" />
+              <input type="radio" name="radio" class="radio radio-warning" />
+            </div>
+            <span class="badge badge-soft badge-warning">Warning</span>
+          </div>
+          <div>
+            <div>
+              <input type="checkbox" checked="checked" class="toggle toggle-error" />
+              <input type="checkbox" checked="checked" class="checkbox checkbox-error" />
+              <input type="radio" name="radio" class="radio radio-error" />
+            </div>
+            <span class="badge badge-soft badge-error">Error</span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-3 md:flex-row">
+            <div class="flex flex-col justify-around md:w-1/2 lg:w-1/4">
+              <progress value="20" max="100" class="progress">Default</progress>
+              <progress value="30" max="100" class="progress progress-neutral">Neutral</progress>
+              <progress value="40" max="100" class="progress progress-primary">Primary</progress>
+              <progress value="50" max="100" class="progress progress-secondary">Secondary</progress>
+              <progress value="60" max="100" class="progress progress-accent">Accent</progress>
+              <progress value="70" max="100" class="progress progress-info">Info</progress>
+              <progress value="80" max="100" class="progress progress-success">Success</progress>
+              <progress value="90" max="100" class="progress progress-warning">Warning</progress>
+              <progress value="100" max="100" class="progress progress-error">Error</progress>
+            </div>
+            <div class="flex flex-col justify-around md:w-1/2 lg:w-1/4">
+              <input type="range" min="0" max="100" value="100" class="range range-xs" />
+              <input type="range" min="0" max="100" value="90" class="range range-xs range-neutral" />
+              <input type="range" min="0" max="100" value="80" class="range range-xs range-primary" />
+              <input type="range" min="0" max="100" value="70" class="range range-xs range-secondary" />
+              <input type="range" min="0" max="100" value="60" class="range range-xs range-accent" />
+              <input type="range" min="0" max="100" value="50" class="range range-xs range-info" />
+              <input type="range" min="0" max="100" value="40" class="range range-xs range-success" />
+              <input type="range" min="0" max="100" value="30" class="range range-xs range-warning" />
+              <input type="range" min="0" max="100" value="20" class="range range-xs range-error" />
+            </div>
+            <div class="md:w-1/2 lg:w-1/4">
+              <div role="tablist" class="tabs tabs-lift">
+                <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Tab 1" />
+                <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 1</div>
+                <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Tab 2" checked="checked" />
+                <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 2</div>
+                <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Tab 3" />
+                <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div>
+              </div>
+              <div class="flex flex-col">
+                <span class="link">I'm a simple link</span> <span class="link link-primary">I'm a simple link</span>
+                <span class="link link-secondary">I'm a simple link</span>
+                <span class="link link-accent">I'm a simple link</span>
+              </div>
+            </div>
+            <div class="stats bg-base-300 border-base-300 border md:w-1/2 lg:w-1/4">
+              <div class="stat">
+                <div class="stat-title">Total Page Views</div>
+                <div class="stat-value">89,400</div>
+                <div class="stat-desc">21% more than last month</div>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-3 md:w-1/2 lg:w-1/4">
+              <div class="card card-border border-base-300 w-full">
+                <div class="mockup-code">
+                  <pre class="text-sm" data-prefix="$"><code>npm i daisyui</code></pre>
+                  <pre class="text-sm" data-prefix=">"><code>installing...</code></pre>
+                  <pre class="text-sm" data-prefix=">"><code>Done!</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <div>
+            <ul class="timeline timeline-vertical timeline-compact">
+              <li>
+                <div class="timeline-middle">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    class="text-primary h-5 w-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="timeline-end timeline-box">Harry Potter and Sorcerer's Stack</div>
+                <hr class="bg-primary" />
+              </li>
+              <li>
+                <hr class="bg-primary" />
+                <div class="timeline-middle">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    class="text-primary h-5 w-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="timeline-end timeline-box">Harry Potter and Chamber of Servers</div>
+                <hr class="bg-primary" />
+              </li>
+              <li>
+                <hr class="bg-primary" />
+                <div class="timeline-middle">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    class="text-primary h-5 w-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="timeline-end timeline-box">Harry Potter and Prisoner of Azure</div>
+                <hr class="bg-primary" />
+              </li>
+              <li>
+                <hr class="bg-primary" />
+                <div class="timeline-middle">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    class="text-primary h-5 w-5"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="timeline-end timeline-box">Harry Potter and Goblet of Firebase</div>
+                <hr />
+              </li>
+              <li>
+                <hr />
+                <div class="timeline-middle">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="timeline-end timeline-box">Harry Potter and Elixir of Phoenix</div>
+                <hr />
+              </li>
+              <li>
+                <hr />
+                <div class="timeline-middle">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="timeline-end timeline-box">Harry Potter and Half-Deployed App</div>
+                <hr />
+              </li>
+              <li>
+                <hr />
+                <div class="timeline-middle">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="timeline-end timeline-box">Harry Potter and Deathly Frameworks</div>
+              </li>
+            </ul>
+          </div>
+          <div class="flex flex-col justify-between">
+            <div class="navbar bg-base-100 shadow-sm">
+              <div class="navbar-start">
+                <div class="dropdown">
+                  <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h8m-8 6h16"
+                      />
+                    </svg>
+                  </div>
+                  <ul
+                    tabindex="0"
+                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                  >
+                    <li><a>Item 1</a></li>
+                    <li>
+                      <a>Parent</a>
+                      <ul class="p-2">
+                        <li><a>Submenu 1</a></li>
+                        <li><a>Submenu 2</a></li>
+                      </ul>
+                    </li>
+                    <li><a>Item 3</a></li>
+                  </ul>
+                </div>
+                <a class="btn btn-ghost text-xl">daisyUI</a>
+              </div>
+              <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal px-1">
+                  <li><a>Item 1</a></li>
+                  <li>
+                    <details>
+                      <summary>Parent</summary>
+                      <ul class="p-2">
+                        <li><a>Submenu 1</a></li>
+                        <li><a>Submenu 2</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                  <li><a>Item 3</a></li>
+                </ul>
+              </div>
+              <div class="navbar-end">
+                <a class="btn">Button</a>
+              </div>
+            </div>
+            <ul class="steps">
+              <li data-content="" class="step step-primary">Step 1</li>
+              <li data-content="?" class="step step-primary">Step 2</li>
+              <li data-content="!" class="step step-accent">Step 3</li>
+              <li data-content="✕" class="step step-accent">Step 4</li>
+              <li data-content="✓" class="step step-success">Step 5</li>
+              <li data-content="=" class="step step-success">Step 6</li>
+              <li data-content="+" class="step step-neutral">Step 7</li>
+              <li data-content="★" class="step step-neutral">Step 8</li>
+              <li data-content="●" class="step step-neutral">Step 9</li>
+            </ul>
+            <ul class="steps">
+              <li data-content="" class="step step">Step 1</li>
+              <li data-content="?" class="step step-secondary">Step 2</li>
+              <li data-content="!" class="step step-secondary">Step 3</li>
+              <li data-content="✕" class="step step-info">Step 4</li>
+              <li data-content="✓" class="step step-info">Step 5</li>
+              <li data-content="=" class="step step-warning">Step 6</li>
+              <li data-content="+" class="step step-warning">Step 7</li>
+              <li data-content="★" class="step step-error">Step 8</li>
+              <li data-content="●" class="step step-error">Step 9</li>
+            </ul>
+            <div class="join">
+              <div>
+                <div>
+                  <input class="input join-item" placeholder="Search" />
+                </div>
+              </div>
+              <select class="select join-item">
+                <option disabled selected>Filter</option>
+                <option>Sci-fi</option>
+                <option>Drama</option>
+                <option>Action</option>
+              </select>
+              <button class="btn join-item btn-accent">Search</button>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="flex flex-col justify-between">
+              <div role="alert" class="alert">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  class="stroke-info h-6 w-6 shrink-0"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <span>12 unread messages. Tap to see.</span>
+              </div>
+              <div role="alert" class="alert alert-info">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  class="h-6 w-6 shrink-0 stroke-current"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <span>New software update available.</span>
+              </div>
+              <div role="alert" class="alert alert-success">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 shrink-0 stroke-current"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>Your purchase has been confirmed!</span>
+              </div>
+              <div role="alert" class="alert alert-warning">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 shrink-0 stroke-current"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <span>Warning: Invalid email address!</span>
+              </div>
+              <div role="alert" class="alert alert-error">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 shrink-0 stroke-current"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>Error! Task failed successfully.</span>
+              </div>
+            </div>
+            <div class="flex flex-col justify-between">
+              <div role="alert" class="alert alert-soft">
+                <span>12 unread messages. Tap to see.</span>
+              </div>
+              <div role="alert" class="alert alert-info alert-soft">
+                <span>New software update available.</span>
+              </div>
+              <div role="alert" class="alert alert-success alert-soft">
+                <span>Your purchase has been confirmed!</span>
+              </div>
+              <div role="alert" class="alert alert-warning alert-soft">
+                <span>Warning: Invalid email address!</span>
+              </div>
+              <div role="alert" class="alert alert-error alert-soft">
+                <span>Error! Task failed successfully.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="src/main.ts"></script>
+  </body>
+</html>
+
+
+
+================================================
+FILE: example/package.json
+================================================
+{
+  "name": "example",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@catppuccin/daisyui": "workspace:../",
+    "@tailwindcss/vite": "^4.0.17",
+    "daisyui": "^5.0.9",
+    "tailwindcss": "^4.0.17",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0"
+  }
+}
+
+
+
+================================================
+FILE: example/tsconfig.json
+================================================
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "moduleDetection": "force",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+
+    /* Linting */
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src"]
+}
+
+
+
+================================================
+FILE: example/vite.config.ts
+================================================
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    tailwindcss(),
+  ],
+})
+
+
+
+================================================
+FILE: example/src/catppuccinTheme.frappe.ts
+================================================
+import { createCatppuccinPlugin } from '@catppuccin/daisyui'
+
+export default createCatppuccinPlugin('frappe', 'lavender')
+
+
+
+================================================
+FILE: example/src/catppuccinTheme.latte.ts
+================================================
+import { createCatppuccinPlugin } from '@catppuccin/daisyui'
+
+export default createCatppuccinPlugin('latte')
+
+
+
+================================================
+FILE: example/src/catppuccinTheme.macchiato.ts
+================================================
+import { createCatppuccinPlugin } from '@catppuccin/daisyui'
+
+export default createCatppuccinPlugin('macchiato', {
+  'primary': 'lavender',
+  'primary-content': 'mantle',
+  'secondary': 'surface0',
+  'secondary-content': 'text',
+  'accent': 'rosewater',
+  'accent-content': 'mantle',
+  'neutral': 'overlay1',
+  'neutral-content': 'mantle',
+})
+
+
+
+================================================
+FILE: example/src/catppuccinTheme.mocha.ts
+================================================
+import { createCatppuccinPlugin } from '@catppuccin/daisyui'
+
+export default createCatppuccinPlugin('mocha', {
+  '--radius-selector': '0.25rem',
+  '--radius-field': '0.5rem',
+  '--radius-box': '0.5rem',
+  '--size-field': '0.25rem',
+  '--size-selector': '0.25rem',
+  '--border': '1px',
+  '--depth': true,
+  '--noise': false,
+}, {
+  prefersdark: true,
+})
+
+
+
+================================================
+FILE: example/src/main.ts
+================================================
+import './style.css'
+
+document.querySelector('#app')!.innerHTML = /* html */`
+<div class="join join-horizontal w-full *:w-1/4">
+${
+  ['latte', 'frappe', 'macchiato', 'mocha'].map((theme, idx) => /* html */`
+    <input
+      type="radio"
+      ${idx === 0 ? 'checked' : ''}
+      name="theme-buttons"
+      class="btn theme-controller join-item"
+      aria-label="${theme}"
+      value="${theme}" />
+  `).join('\n')
+}
+</div>
+`
+
+
+
+================================================
+FILE: example/src/style.css
+================================================
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: false;
+}
+@plugin "./catppuccinTheme.latte.ts";
+@plugin "./catppuccinTheme.frappe.ts";
+@plugin "./catppuccinTheme.macchiato.ts";
+@plugin "./catppuccinTheme.mocha.ts";
+
+
+
+================================================
+FILE: example/src/vite-env.d.ts
+================================================
+/// <reference types="vite/client" />
+
+
+
+================================================
+FILE: src/generate.ts
+================================================
+import type { FlavorName } from './generateTheme'
+import { appendFile } from 'node:fs/promises'
+import { generateTheme } from './generateTheme'
+
+const flavorNames = ['latte', 'frappe', 'macchiato', 'mocha'] as FlavorName[]
+
+const themeCSSs = flavorNames.map(f =>
+  `:root:has(input.theme-controller[value=${f}]:checked),[data-theme="${f}"]${JSON.stringify(generateTheme(f)).replace(/"/g, '').replace(/,/g, ';')}`,
+)
+
+Promise.all(
+  [
+    ...themeCSSs.map((themeCSS, i) => {
+      const flavorName = flavorNames[i]
+      return appendFile(
+        `./${flavorName}.css`,
+        themeCSS,
+        { encoding: 'utf-8' },
+      )
+    }),
+    appendFile('./themes.css', themeCSSs.join('\n'), { encoding: 'utf-8' }),
+  ],
+)
+
+
+
+================================================
+FILE: src/generateTheme.ts
+================================================
+import type { AccentName, ColorName, FlavorName, MonochromaticName } from '@catppuccin/palette'
+import { flavors } from '@catppuccin/palette'
+
+interface ColorOptions {
+  'primary': AccentName
+  'primary-content': MonochromaticName
+  'secondary': AccentName | MonochromaticName
+  'secondary-content': MonochromaticName
+  'accent': AccentName
+  'accent-content': MonochromaticName
+  'neutral': MonochromaticName
+  'neutral-content': MonochromaticName
+  'success': 'green'
+  'success-content': MonochromaticName
+  'warning': 'yellow'
+  'warning-content': MonochromaticName
+  'error': 'red'
+  'error-content': MonochromaticName
+  'info': AccentName
+  'info-content': MonochromaticName
+  'base-100': MonochromaticName
+  'base-200': MonochromaticName
+  'base-300': MonochromaticName
+  'base-content': MonochromaticName
+}
+
+type Radius = '0rem' | '0.25rem' | '0.5rem' | '1rem' | '2rem'
+type Sizes = '0.1875rem' | '0.21875rem' | '0.25rem' | '0.28125rem' | '0.3125rem'
+type Border = '0.5px' | '1px' | '1.5px' | '2px'
+
+interface OtherOptions {
+  '--radius-selector': Radius
+  '--radius-field': Radius
+  '--radius-box': Radius
+  '--size-field': Sizes
+  '--size-selector': Sizes
+  '--border': Border
+  '--depth': boolean
+  '--noise': boolean
+}
+
+type Theme = {
+  [key in `--color-${keyof ColorOptions}`]: string
+} & {
+  [key in keyof OtherOptions]: string
+} & {
+  'color-scheme': 'dark' | 'light'
+  '--noise': string
+  '--depth': string
+}
+type ThemeOptions = ColorOptions & OtherOptions
+
+const defaultThemeOption: ThemeOptions = {
+  'primary': 'lavender',
+  'primary-content': 'mantle',
+  'secondary': 'surface0',
+  'secondary-content': 'text',
+  'accent': 'rosewater',
+  'accent-content': 'mantle',
+  'neutral': 'overlay1',
+  'neutral-content': 'mantle',
+  'success': 'green',
+  'success-content': 'base',
+  'warning': 'yellow',
+  'warning-content': 'base',
+  'error': 'red',
+  'error-content': 'base',
+  'info': 'sky',
+  'info-content': 'mantle',
+  'base-100': 'base',
+  'base-200': 'mantle',
+  'base-300': 'crust',
+  'base-content': 'text',
+  '--radius-selector': '0.25rem',
+  '--radius-field': '0.5rem',
+  '--radius-box': '0.5rem',
+  '--size-field': '0.25rem',
+  '--size-selector': '0.25rem',
+  '--border': '1px',
+  '--depth': true,
+  '--noise': false,
+}
+
+type CustomThemeOptions = Partial<Omit<ThemeOptions, 'success' | 'warning' | 'error'>>
+
+export function generateTheme(themeName: FlavorName, themeOptions: CustomThemeOptions = {}) {
+  const options = {
+    ...defaultThemeOption,
+    ...themeOptions,
+  } as ThemeOptions
+
+  const entries = Object.entries(options)
+  const theme = {
+    'color-scheme': flavors[themeName].dark ? 'dark' : 'light',
+    ...Object.fromEntries(entries.filter(([k]) => k.startsWith('--'))) as Record<`${keyof OtherOptions}`, string>,
+    ...(entries
+      .filter(([_, v]) => typeof v === 'boolean') as ['--noise' | '--depth', boolean][])
+      .reduce((acc, [key, value]) => {
+        acc[key] = value ? '1' : '0'
+        return acc
+      }, {} as Pick<Theme, '--noise' | '--depth'>),
+    ...(entries
+      .filter(([k]) => !k.startsWith('--')) as [keyof ColorOptions, ColorName][])
+      .reduce((acc, [key, value]) => {
+        acc[`--color-${key}`] = flavors[themeName].colors[value].hex
+        return acc
+      }, {} as Pick<Theme, `--color-${keyof ColorOptions}`>),
+  } as Theme
+  return theme
+}
+
+export type { CustomThemeOptions, Theme }
+export type { AccentName, FlavorName, MonochromaticName }
+
+
+
+================================================
+FILE: src/index.ts
+================================================
+import type Plugin from 'tailwindcss/plugin'
+import type { AccentName, CustomThemeOptions, FlavorName, MonochromaticName, Theme } from './generateTheme'
+
+import daisyThemePlugin from 'daisyui/theme'
+import plugin from 'tailwindcss/plugin'
+import { generateTheme } from './generateTheme'
+
+type WithOptionsType = ReturnType<typeof Plugin.withOptions>
+
+interface DaisyOptions {
+  default?: boolean
+  prefersdark?: boolean
+  root?: string
+}
+
+function createCatppuccinPlugin(theme: FlavorName, accent?: AccentName, daisyOptions?: DaisyOptions): WithOptionsType
+function createCatppuccinPlugin(theme: FlavorName, customColors?: CustomThemeOptions, daisyOptions?: DaisyOptions): WithOptionsType
+function createCatppuccinPlugin(themeName: FlavorName, options?: CustomThemeOptions | AccentName, daisyOptions = {}): WithOptionsType {
+  let theme: Theme
+
+  if (typeof options === 'string') {
+    theme = generateTheme(themeName, {
+      accent: options,
+    })
+  }
+  else {
+    theme = generateTheme(themeName, options)
+  }
+
+  return plugin.withOptions(() => {
+    return (PluginAPI) => {
+      daisyThemePlugin({
+        name: themeName,
+        ...daisyOptions,
+        ...theme,
+      }).handler(PluginAPI)
+    }
+  })
+}
+
+export type { AccentName, FlavorName, MonochromaticName }
+export { createCatppuccinPlugin }
+
+
+
+================================================
+FILE: src/legacy/index.ts
+================================================
+import type { AccentName, FlavorName, MonochromaticName } from '@catppuccin/palette'
+import { flavorEntries } from '@catppuccin/palette'
+
+const themeKeys = [
+  '--animation-btn',
+  '--animation-input',
+  '--btn-focus-scale',
+  '--rounded-badge',
+  '--rounded-box',
+  '--rounded-btn',
+  '--tab-border',
+  '--tab-radius',
+  'accent',
+  'accent-content',
+  'base-100',
+  'base-200',
+  'base-300',
+  'base-content',
+  'color-scheme',
+  'error',
+  'error-content',
+  'fontFamily',
+  'info',
+  'info-content',
+  'neutral',
+  'neutral-content',
+  'primary',
+  'primary-content',
+  'secondary',
+  'secondary-content',
+  'success',
+  'success-content',
+  'warning',
+  'warning-content',
+] as const
+
+(() => themeKeys)()
+
+const defaultColorOptions: ColorOptions = {
+  primary: 'lavender',
+  secondary: 'surface0',
+  accent: 'rosewater',
+  neutral: 'overlay1',
+  success: 'green',
+  warning: 'yellow',
+  error: 'red',
+  info: 'sky',
+}
+
+interface ColorOptions {
+  primary: AccentName
+  secondary: AccentName | MonochromaticName
+  accent: AccentName
+  neutral: MonochromaticName
+  success: 'green'
+  warning: 'yellow'
+  error: 'red'
+  info: AccentName
+}
+
+type CustomColorOptions = Partial<Omit<ColorOptions, 'success' | 'warning' | 'error'>>
+
+function getSemanticColors(options: CustomColorOptions = {}): ColorOptions {
+  return { ...defaultColorOptions, ...options }
+}
+
+function createFlavor(theme: FlavorName, accent?: AccentName): any
+function createFlavor(theme: FlavorName, customColors?: CustomColorOptions): any
+function createFlavor(theme: FlavorName, options?: CustomColorOptions | AccentName): any {
+  const palette = flavorEntries.find(([name]) => name === theme)?.[1]
+
+  if (!palette)
+    throw new Error(`Flavor ${theme} not found!`)
+
+  let customColors: ColorOptions
+  if (typeof options === 'string') {
+    customColors = getSemanticColors({
+      accent: options,
+    })
+  }
+  else {
+    customColors = getSemanticColors(options)
+  }
+
+  const { primary, secondary, accent, neutral, info, success, error, warning } = customColors
+
+  const daisyTheme: Record<string, Partial<Record<typeof themeKeys[number], string>>> = {
+    [theme]: {
+      'color-scheme': palette.dark ? 'dark' : 'light',
+      'base-100': palette.colors.base.hex,
+      'base-200': palette.colors.mantle.hex,
+      'base-300': palette.colors.crust.hex,
+      'primary': palette.colors[primary].hex,
+      'secondary': palette.colors[secondary].hex,
+      'accent': palette.colors[accent].hex,
+      'neutral': palette.colors[neutral].hex,
+      'success': palette.colors[success].hex,
+      'warning': palette.colors[warning].hex,
+      'error': palette.colors[error].hex,
+      'info': palette.colors[info].hex,
+    },
+  }
+  return daisyTheme
+}
+
+export type { AccentName, FlavorName, MonochromaticName }
+export default createFlavor
+
+
+
+================================================
+FILE: .github/workflows/build.yml
+================================================
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+
+      - run: pnpm run build
+
+
+
+================================================
+FILE: .github/workflows/release-please.yml
+================================================
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          release-type: node
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+
+      - run: pnpm run build
+
+      - uses: JS-DevTools/npm-publish@v3
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+
+
