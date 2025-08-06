@@ -21,4 +21,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/theme-behavior', function () {
+        return Inertia::render('ThemeBehavior');
+    })->name('theme.behavior');
 });
