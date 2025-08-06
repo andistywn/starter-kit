@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useThemeManager } from '@/composables/useThemeManager';
+import { useThemeStore } from '@/stores/theme';
 
 interface Props {
     showThemeSelector?: boolean;
@@ -75,25 +75,29 @@ withDefaults(defineProps<Props>(), {
     variant: 'dropdown',
 });
 
-const themeManager = useThemeManager();
+// Use Pinia store directly
+const themeStore = useThemeStore();
 
 // Computed properties
-const currentTheme = computed(() => themeManager.getTheme());
-const availableThemes = computed(() => themeManager.getAvailableThemes());
-const isCurrentThemeDark = computed(() => themeManager.isCurrentThemeDark.value);
-const watchSystemTheme = computed(() => themeManager.getWatchSystemTheme());
+const currentTheme = computed(() => themeStore.currentTheme);
+const availableThemes = computed(() => themeStore.allAvailableThemes);
+const isCurrentThemeDark = computed(() => themeStore.isCurrentThemeDark);
+const watchSystemTheme = computed(() => themeStore.watchSystemTheme);
 
 // Methods
 const selectTheme = (themeName: string) => {
-    themeManager.setTheme(themeName);
+    console.log('ThemeSwitcher: Setting theme to:', themeName);
+    themeStore.setTheme(themeName);
 };
 
 const toggleDark = () => {
-    themeManager.toggleDark();
+    console.log('ThemeSwitcher: Toggling dark mode');
+    themeStore.toggleDark();
 };
 
 const toggleSystemWatch = () => {
-    themeManager.setWatchSystemTheme(!watchSystemTheme.value);
+    console.log('ThemeSwitcher: Toggling system theme watch to:', !watchSystemTheme.value);
+    themeStore.setWatchSystemTheme(!watchSystemTheme.value);
 };
 </script>
 

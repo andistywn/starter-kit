@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
+// @ts-ignore
 import Banner from '@/Components/Banner.vue';
+// @ts-ignore
 import NavigationMenu from '@/Components/NavigationMenu.vue';
 
 interface Props {

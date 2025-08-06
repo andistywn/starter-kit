@@ -7,11 +7,13 @@ export function useTheme() {
 
     // Initialize theme system on mount
     onMounted(() => {
+        console.log('useTheme: Initializing theme system on mount');
         cleanup = themeStore.initializeTheme();
     });
 
     // Cleanup on unmount
     onUnmounted(() => {
+        console.log('useTheme: Cleaning up on unmount');
         if (cleanup) {
             cleanup();
         }
@@ -30,14 +32,17 @@ export function useTheme() {
 
     // Theme actions
     const setTheme = (theme: string) => {
+        console.log('useTheme: Setting theme:', theme);
         themeStore.setTheme(theme);
     };
 
     const toggleDark = () => {
+        console.log('useTheme: Toggling dark mode');
         themeStore.toggleDark();
     };
 
     const setWatchSystemTheme = (watch: boolean, updateTheme = true) => {
+        console.log('useTheme: Setting watchSystemTheme:', watch, 'updateTheme:', updateTheme);
         themeStore.setWatchSystemTheme(watch, updateTheme);
     };
 

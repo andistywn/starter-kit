@@ -1,5 +1,6 @@
 import type { App } from 'vue';
-import { useThemeManager, initThemeManager } from '@/composables/useThemeManager';
+import { useThemeStore } from '@/stores/theme';
+import { availableThemes, defaultTheme, defaultDarkTheme } from '@/config/themes';
 
 export interface ThemeManagerOptions {
   light?: string;
@@ -10,36 +11,42 @@ export interface ThemeManagerOptions {
 export const createThemeManager = (options: ThemeManagerOptions = {}) => {
   return {
     install(app: App) {
-      // Initialize theme manager
-      const cleanup = initThemeManager();
+      // Get theme store instance
+      const themeStore = useThemeStore();
 
-      // Get theme manager instance
-      const themeManager = useThemeManager();
+      console.log('Theme Plugin: Initializing with options:', options);
 
-      // Set default themes if provided
-      if (options.light || options.dark) {
-        themeManager.setDefaults({
-          light: options.light,
-          dark: options.dark,
-        });
-      }
+      // Store the defaults for reference, but don't apply them directly
+      const defaults = {
+        light: options.light || defaultTheme,
+        dark: options.dark || defaultDarkTheme
+      };
 
-      // Set system theme watching if provided
+      console.log('Theme Plugin: Storing defaults:', defaults);
+      app.provide('themeDefaults', defaults);
+
+      // Initialize theme system - this will load from localStorage if available
+      const cleanup = themeStore.initializeTheme();
+
+      // Set system theme watching if provided, but don't force theme change
       if (typeof options.watchSystemTheme === 'boolean') {
-        themeManager.setWatchSystemTheme(options.watchSystemTheme);
+        console.log('Theme Plugin: Setting watchSystemTheme to:', options.watchSystemTheme);
+        themeStore.setWatchSystemTheme(options.watchSystemTheme, false);
       }
 
-      // Make theme manager available globally
-      app.config.globalProperties.$theme = themeManager;
+      // Make theme store available globally
+      app.config.globalProperties.$theme = themeStore;
 
-      // Provide theme manager for composition API
-      app.provide('themeManager', themeManager);
+      // Provide theme store for composition API
+      app.provide('themeStore', themeStore);
 
       // Cleanup on app unmount
-      app.config.globalProperties.$themeManagerCleanup = cleanup;
+      if (cleanup) {
+        app.config.globalProperties.$themeCleanup = cleanup;
+      }
     },
   };
 };
 
-// Export the composable for direct use
-export { useThemeManager } from '@/composables/useThemeManager';
+// Export the store for direct use
+export { useThemeStore } from '@/stores/theme';

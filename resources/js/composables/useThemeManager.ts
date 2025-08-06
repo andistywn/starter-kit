@@ -1,10 +1,9 @@
 import { ref, reactive, computed, readonly } from 'vue';
 import { availableThemes, defaultTheme, defaultDarkTheme, type ThemeConfig } from '@/config/themes';
+import { useThemeStore } from '@/stores/theme';
 
-// Theme manager state
-const currentTheme = ref<string>(defaultTheme);
-const isDarkMode = ref<boolean>(false);
-const watchSystemTheme = ref<boolean>(true);
+// Use the Pinia store for state management
+const themeStore = useThemeStore();
 
 // Default themes for light/dark toggle
 const defaults = reactive({
@@ -13,49 +12,22 @@ const defaults = reactive({
   watchSystemTheme: true,
 });
 
-// Check system preference
+// Use the store's system theme detection
 const getSystemTheme = (): boolean => {
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return themeStore.getSystemTheme();
 };
 
-// Initialize theme manager
+// Initialize theme manager - now just initializes the store
 const initializeTheme = () => {
-  // Get saved theme from localStorage or use default
-  const savedTheme = localStorage.getItem('theme');
-  const savedWatchSystem = localStorage.getItem('watchSystemTheme');
+  console.log('Theme Manager: Initializing theme manager (using store)');
 
-  // Set watch system preference
-  watchSystemTheme.value = savedWatchSystem ? JSON.parse(savedWatchSystem) : defaults.watchSystemTheme;
-
-  // Set initial theme
-  if (savedTheme && isValidTheme(savedTheme)) {
-    currentTheme.value = savedTheme;
-  } else if (watchSystemTheme.value) {
-    isDarkMode.value = getSystemTheme();
-    currentTheme.value = isDarkMode.value ? defaults.dark : defaults.light;
-  } else {
-    currentTheme.value = defaults.light;
-  }
-
-  // Apply theme to document
-  applyTheme(currentTheme.value);
-};
-
-// Apply theme to document
-const applyTheme = (theme: string) => {
-  document.documentElement.setAttribute('data-theme', theme);
-  document.documentElement.className = `theme-transition ${theme}`;
-
-  // Update body class for additional styling
-  document.body.className = `theme-${theme}`;
-
-  // Save to localStorage
-  localStorage.setItem('theme', theme);
+  // Initialize the store which will handle loading from localStorage
+  return themeStore.initializeTheme();
 };
 
 // Check if theme is valid
 const isValidTheme = (theme: string): boolean => {
-  return availableThemes.some(t => t.name === theme);
+  return themeStore.isValidTheme(theme);
 };
 
 // Get theme configuration
@@ -63,36 +35,27 @@ const getThemeConfig = (themeName: string): ThemeConfig | undefined => {
   return availableThemes.find(t => t.name === themeName);
 };
 
-// Theme manager composable
+// Theme manager composable - now a wrapper around the Pinia store
 export const useThemeManager = () => {
   // Set theme
   const setTheme = (theme: string) => {
-    if (!isValidTheme(theme)) {
-      console.warn(`Invalid theme: ${theme}`);
-      return;
-    }
-
-    currentTheme.value = theme;
-    applyTheme(theme);
-
-    // Update dark mode state based on theme
-    const themeConfig = getThemeConfig(theme);
-    if (themeConfig) {
-      isDarkMode.value = themeConfig.isDark;
-    }
+    console.log('Theme Manager: Setting theme (via store):', theme);
+    themeStore.setTheme(theme);
   };
 
   // Get current theme
-  const getTheme = () => currentTheme.value;
+  const getTheme = () => themeStore.currentTheme;
 
   // Toggle between light and dark themes
   const toggleDark = () => {
-    const newTheme = currentTheme.value === defaults.light ? defaults.dark : defaults.light;
-    setTheme(newTheme);
+    console.log('Theme Manager: Toggling dark mode (via store)');
+    themeStore.toggleDark();
   };
 
   // Set default themes
   const setDefaults = (themes: { light?: string; dark?: string }) => {
+    console.log('Theme Manager: Setting defaults (via store):', themes);
+    // Store the defaults in our local reactive object
     if (themes.light && isValidTheme(themes.light)) {
       defaults.light = themes.light;
     }
@@ -109,36 +72,30 @@ export const useThemeManager = () => {
 
   // Set system theme watching
   const setWatchSystemTheme = (watch: boolean, updateTheme: boolean = true) => {
-    watchSystemTheme.value = watch;
-    localStorage.setItem('watchSystemTheme', JSON.stringify(watch));
-
-    if (watch && updateTheme) {
-      isDarkMode.value = getSystemTheme();
-      const newTheme = isDarkMode.value ? defaults.dark : defaults.light;
-      setTheme(newTheme);
-    }
+    console.log('Theme Manager: Setting watchSystemTheme (via store):', watch);
+    themeStore.setWatchSystemTheme(watch, updateTheme);
   };
 
   // Get system theme watching status
-  const getWatchSystemTheme = () => watchSystemTheme.value;
+  const getWatchSystemTheme = () => themeStore.watchSystemTheme;
 
   // Get available themes
-  const getAvailableThemes = () => availableThemes;
+  const getAvailableThemes = () => themeStore.allAvailableThemes;
 
   // Get themes by type (light/dark)
   const getThemesByType = (isDark: boolean) => {
-    return availableThemes.filter(theme => theme.isDark === isDark);
+    return isDark ? themeStore.darkThemes : themeStore.lightThemes;
   };
 
   // Computed properties
-  const currentThemeConfig = computed(() => getThemeConfig(currentTheme.value));
-  const isCurrentThemeDark = computed(() => currentThemeConfig.value?.isDark || false);
+  const currentThemeConfig = computed(() => themeStore.currentThemeConfig);
+  const isCurrentThemeDark = computed(() => themeStore.isCurrentThemeDark);
 
   return {
     // State
-    currentTheme: readonly(currentTheme),
-    isDarkMode: readonly(isDarkMode),
-    watchSystemTheme: readonly(watchSystemTheme),
+    currentTheme: computed(() => themeStore.currentTheme),
+    isDarkMode: computed(() => themeStore.isDarkMode),
+    watchSystemTheme: computed(() => themeStore.watchSystemTheme),
 
     // Computed
     currentThemeConfig,
@@ -159,35 +116,28 @@ export const useThemeManager = () => {
   };
 };
 
-// Initialize theme manager when module loads
+// Initialize theme manager when module loads - now just a wrapper around the store
 let initialized = false;
 
 export const initThemeManager = () => {
-  if (initialized) return;
+  console.log('Theme Manager: initThemeManager called, initialized:', initialized);
+
+  if (initialized) {
+    console.log('Theme Manager: Already initialized, returning');
+    return;
+  }
 
   initialized = true;
-  initializeTheme();
+  console.log('Theme Manager: Setting initialized to true');
 
-  // Watch for system theme changes
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-    if (watchSystemTheme.value) {
-      isDarkMode.value = e.matches;
-      const newTheme = e.matches ? defaults.dark : defaults.light;
-      currentTheme.value = newTheme;
-      applyTheme(newTheme);
-    }
-  };
-
-  mediaQuery.addEventListener('change', handleSystemThemeChange);
-
-  // Return cleanup function
-  return () => {
-    mediaQuery.removeEventListener('change', handleSystemThemeChange);
-  };
+  // Initialize the store
+  return initializeTheme();
 };
 
 // Auto-initialize if in browser environment
 if (typeof window !== 'undefined') {
+  console.log('Theme Manager: Browser environment detected, auto-initializing');
   initThemeManager();
+} else {
+  console.log('Theme Manager: Not in browser environment, skipping auto-initialization');
 }

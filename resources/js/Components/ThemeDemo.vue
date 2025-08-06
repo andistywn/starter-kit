@@ -155,14 +155,15 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useThemeManager } from '@/composables/useThemeManager';
+import { useThemeStore } from '@/stores/theme';
 import ThemeSwitcher from '@/Components/ThemeSwitcher.vue';
 
-const themeManager = useThemeManager();
+// Use Pinia store directly
+const themeStore = useThemeStore();
 
-const currentTheme = computed(() => themeManager.getTheme());
-const isCurrentThemeDark = computed(() => themeManager.isCurrentThemeDark.value);
-const watchSystemTheme = computed(() => themeManager.getWatchSystemTheme());
+const currentTheme = computed(() => themeStore.currentTheme);
+const isCurrentThemeDark = computed(() => themeStore.isCurrentThemeDark);
+const watchSystemTheme = computed(() => themeStore.watchSystemTheme);
 </script>
 
 <style scoped>
